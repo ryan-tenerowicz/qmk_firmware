@@ -99,10 +99,6 @@ static bool in_alttab = false; // does an ALT-TAB, for windows cycling, without 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_QWERTY] = { /*QWERTY*/
-		/*
-		   SWITCH TO THIS FORMAT/SHORTCUT????:  KC_A,      L(MOUSE,KC_S), L(MIDDLE,KC_D), GUI(KC_F),       CTL(KC_G),
-https://docs.qmk.fm/#/faq_keymap?id=arrow-on-right-modifier-keys-with-dual-role <-- User VIM nav arrow key without layer??? Tap and hold?
-*/
 		{KC_TAB,              KC_Q,              KC_W,     KC_E,    KC_R,     KC_T,   KC_Y,         KC_U,       KC_I,    KC_O,   KC_P,                  KC_BSLS },
 		{MT(MOD_LGUI,KC_ESC), MT(MOD_LCTL,KC_A), KC_S,     KC_D,    KC_F,     KC_G,   KC_H,         KC_J,       KC_K,    KC_L,   MT(MOD_RCTL,KC_SCLN),  MT(MOD_RGUI,KC_QUOT)},
 		{KC_LSFT,             MT(MOD_LALT,KC_Z), KC_X,     KC_C,    KC_V,     KC_B,   KC_N,         KC_M,       KC_COMM, KC_DOT, MT(MOD_RALT,KC_SLSH),  KC_RSFT },
@@ -127,7 +123,7 @@ https://docs.qmk.fm/#/faq_keymap?id=arrow-on-right-modifier-keys-with-dual-role 
 		{XXXXXXX, XXXXXXX,            XXXXXXX, XXXXXXX, KC_F11,  KC_F12,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,               XXXXXXX  },
 		{MT(MOD_LGUI,KC_ESC), MT(MOD_LCTL,KC_F1), KC_F2,   KC_F3,   KC_F4,   KC_F5,    KC_F6,   KC_F7,   KC_F8,   KC_F9,   MT(MOD_RCTL,KC_F10),   MT(MOD_RGUI,KC_ESC)  },
 		{MT(KC_LSFT,KC_CAPS), MT(MOD_LALT,KC_F6), KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, KC_LALT,               KC_RSFT  },
-		{XXXXXXX, XXXXXXX,            XXXXXXX, XXXXXXX,KC_SPC ,  XXXXXXX,  XXXXXXX, XXXXXXX, RESET,   XXXXXXX, XXXXXXX,               XXXXXXX  }
+		{XXXXXXX, XXXXXXX,            XXXXXXX, XXXXXXX,KC_SPC ,  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX,               XXXXXXX  }
 	}
 
 };
@@ -152,13 +148,11 @@ void keyboard_post_init_user(void) {
 	debug_matrix=false;
 	debug_keyboard=false;
 	debug_mouse=false;
-	//ps2_mouse_set_remote_mode();
 }
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	static uint16_t key_timer;
-	//static bool in_cursor_mode = false;
 
 	switch (keycode) {
 		case TAPHOLDKEYTEST:
@@ -183,7 +177,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 			return false;
 
 		case RESET:
-			//oled_write_ln_P(PSTR("RESETORFLASH"), true);
 			_delay_ms(1000);
 			break;
 
@@ -194,9 +187,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 					SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_TAB));
 					in_alttab = true;
 				} else {
-					SEND_STRING(SS_TAP(X_TAB));
 					// Do not release Alt here, or it will be impossible to switch more than one window:
 					// alt-tab-tab will be interpreted as alt-tab, then tab
+					SEND_STRING(SS_TAP(X_TAB));
 				}
 			}
 			return false;
@@ -225,7 +218,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	return true;
 }
 
-//#ifdef OLED_DRIVER_ENABLE
 #ifdef OLED_ENABLE
 void oled_task_user(void) {
 	// Vanity Text
