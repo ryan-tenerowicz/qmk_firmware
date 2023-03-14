@@ -13,13 +13,14 @@ COMMAND_ENABLE = no     # Commands for debug and configuration
 NKRO_ENABLE = yes       # USB Nkey Rollover
 
 # Options that are specific to current build of Santoku
+#PS2_ENABLE = yes
 #PS2_MOUSE_ENABLE = yes
 #PS2_USE_USART = yes
 #PS2_USE_BUSYWAIT = yes
 #MOUSEKEY_ENABLE = yes
-ENCODER_ENABLE = yes
+#ENCODER_ENABLE = yes
 LTO_ENABLE = yes
-OLED_ENABLE = yes
+#OLED_ENABLE = yes
 OLED_DRIVER = SSD1306
 OPT_DEFS += -DHAL_USE_I2C=TRUE
 #POINTING_DEVICE_ENABLE = yes # used for the scroll wheel

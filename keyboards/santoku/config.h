@@ -18,6 +18,7 @@
 
 //#include "config_common.h"
 
+
 #define W25Q080    // rp2040 generic
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET // Activates the double-tap behavior
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 200U // Timeout window in ms in which the double tap can occur.
@@ -69,9 +70,14 @@
 //#endif
 
 
+//#define PS2_CLOCK_PIN GP13
+//#define PS2_DATA_PIN  GP1
+//#define PS2_CLOCK_PIN D5
+//#define PS2_DATA_PIN  D2
+
 #ifdef PS2_USE_USART
-#define PS2_CLOCK_PIN D5
-#define PS2_DATA_PIN  D2
+//#define PS2_CLOCK_PIN D5
+//#define PS2_DATA_PIN  D2
 /* synchronous, odd parity, 1-bit stop, 8-bit data, sample at falling edge */
 /* set DDR of CLOCK as input to be slave */
 #define PS2_USART_INIT() do {   \
@@ -106,8 +112,8 @@
 
 
 #ifdef PS2_USE_BUSYWAIT
-#define PS2_CLOCK_PIN   D5
-#define PS2_DATA_PIN    D2
+//#define PS2_CLOCK_PIN   D5
+//#define PS2_DATA_PIN    D2
 #endif
 
 
