@@ -1,3 +1,8 @@
-PS2_MOUSE_ENABLE = yes
+POINTING_DEVICE_ENABLE = yes
+POINTING_DEVICE_DRIVER = custom
+
+PS2_MOUSE_ENABLE = no
 PS2_ENABLE = yes
 PS2_USE_USART = yes
+
+SRC += my_pointing_device.c

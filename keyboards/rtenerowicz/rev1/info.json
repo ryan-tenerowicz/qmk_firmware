@@ -1,8 +1,8 @@
 {
-  "keyboard_name": "naKey",
-  "manufacturer": "cKeys",
+  "keyboard_name": "keyboard",
+  "manufacturer": "rtenerowicz",
   "url": "",
-  "maintainer": "qmk",
+  "maintainer": "rtenerowicz",
   "usb": {
     "vid": "0xFEED",
     "pid": "0x6060",
