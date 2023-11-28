@@ -1,8 +1,11 @@
 POINTING_DEVICE_ENABLE = yes
 POINTING_DEVICE_DRIVER = custom
+MOUSE_SHARED_EP = yes
 
 PS2_MOUSE_ENABLE = no
 PS2_ENABLE = yes
 PS2_USE_USART = yes
+
+SPLIT_KEYBOARD = yes
 
 SRC += my_pointing_device.c

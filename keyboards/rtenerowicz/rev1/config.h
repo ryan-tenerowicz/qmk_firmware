@@ -32,3 +32,9 @@
 #define PS2_USART_RX_DATA       UDR1
 #define PS2_USART_ERROR         (UCSR1A & ((1<<FE1) | (1<<DOR1) | (1<<UPE1)))
 #define PS2_USART_RX_VECT       USART1_RX_vect
+
+#define SPLIT_HAND_PIN B6
+#define USE_I2C
+
+#define SPLIT_POINTING_ENABLE
+#define POINTING_DEVICE_LEFT
