@@ -152,11 +152,8 @@ typedef enum ps2_mouse_sample_rate_e {
     PS2_MOUSE_200_SAMPLES_SEC = 200,
 } ps2_mouse_sample_rate_t;
 
-void pointing_device_init(void);
-
-void ps2_mouse_init_user(void);
-
-bool pointing_device_task(void);
+void pointing_device_driver_init(void);
+report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report);
 
 void ps2_mouse_disable_data_reporting(void);
 

@@ -39,7 +39,7 @@ static inline void ps2_mouse_scroll_button_task(report_mouse_t *mouse_report);
 /* ============================= IMPLEMENTATION ============================ */
 
 /* supports only 3 button mouse at this time */
-void pointing_device_init(void) {
+void pointing_device_driver_init(void) {
     ps2_host_init();
 
     wait_ms(PS2_MOUSE_INIT_DELAY); // wait for powering up
@@ -63,15 +63,9 @@ void pointing_device_init(void) {
 #ifdef PS2_MOUSE_USE_2_1_SCALING
     ps2_mouse_set_scaling_2_1();
 #endif
-
-    ps2_mouse_init_user();
 }
 
-__attribute__((weak)) void ps2_mouse_init_user(void) {}
-
-__attribute__((weak)) void ps2_mouse_moved_user(report_mouse_t *mouse_report) {}
-
-bool pointing_device_task(void) {
+report_mouse_t pointing_device_driver_get_report(report_mouse_t _) {
     static uint8_t buttons_prev = 0;
     extern int     tp_buttons;
 
@@ -114,18 +108,16 @@ bool pointing_device_task(void) {
 #if PS2_MOUSE_SCROLL_BTN_MASK
         ps2_mouse_scroll_button_task(&mouse_report);
 #endif
-        if (mouse_report.x || mouse_report.y || mouse_report.v) {
-            ps2_mouse_moved_user(&mouse_report);
-        }
 #ifdef PS2_MOUSE_DEBUG_HID
         // Used to debug the bytes sent to the host
         ps2_mouse_print_report(&mouse_report);
 #endif
-        host_mouse_send(&mouse_report);
+        //host_mouse_send(&mouse_report);
+        return mouse_report;
     }
 
     ps2_mouse_clear_report(&mouse_report);
-    return true;
+    return mouse_report;
 }
 
 void ps2_mouse_disable_data_reporting(void) {
