@@ -1,0 +1,381 @@
+units:
+  # Proxy Spacing Variables
+  kx: cx
+  ky: cy
+  # Padding Variables
+  px: kx + 2
+  py: ky + 2
+
+points:
+  zones:
+    matrix:
+      # Fix placement on KiCAD sheet.
+      anchor:
+        shift: [150, -150]
+      columns:
+        inner:
+          key:
+            column_net: B1
+          rows:
+            top:
+              bind: [0, 21, 40, 0]
+        index:
+          key:
+            stagger: 0.25cy
+            column_net: B3
+        middle:
+          key:
+            stagger: 0.25cy
+            column_net: B2
+        ring:
+          key:
+            stagger: -0.25cy
+            column_net: B6
+        pinky:
+          key:
+            stagger: -0.25cy
+            column_net: F0
+        outer:
+          key:
+            column_net: F1
+      rows:
+        bottom:
+          padding: 18
+          row_net: F4
+        home:
+          padding: 18
+          row_net: F5
+        top:
+          row_net: F6
+        nums:
+          row_net: F7
+
+    thumb:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [-3, -29]
+      columns:
+        inner:
+          key:
+            column_net: F0
+            origin: [11.75, -9]
+        far:
+          key:
+            column_net: B3
+            shift: [-2px-1.1, -5.55]
+            rotate: 28
+      rows:
+        thumb:
+          row_net: B7
+
+outlines:
+  raw:
+    - what: rectangle
+      where: true
+      bound: true
+      asym: left
+      size: [px, py+3]
+      corner: 1
+  thumb:
+    - what: rectangle
+      where:
+        ref: matrix_inner_bottom
+        shift: [4, 13]
+      size: [70, 106]
+      corner: 1
+  extra_thumb:
+    - what: rectangle
+      where:
+        ref: thumb_far_thumb
+        shift: [0, 6]
+      size: [px, py+12]
+      corner: 1
+  fill:
+    - what: polygon
+      points: 
+        - ref: matrix_inner_bottom
+          shift: [66, 0]
+        - ref: matrix_inner_bottom
+          shift: [68,-10]
+        - ref: matrix_inner_bottom
+          shift: [39, -40]
+        - ref: matrix_inner_bottom
+          shift: [39, 0]
+  full:
+    - raw
+    - thumb
+    - extra_thumb
+    - fill
+        
+
+pcbs:
+  keyboard:
+    outlines:
+      main:
+        outline: full
+    footprints:
+      keys:
+        what: choc
+        where: true
+        params:
+          from: "{{colrow}}"
+          to: "{{column_net}}"
+          keycaps: true
+          reverse: false
+          hotswap: false
+      diodes:
+        what: diode
+        where: true
+        adjust:
+          shift: [0, 9]
+          rotate: 180
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+
+      elitec:
+        what: elitec
+        where:
+          ref: matrix_inner_nums
+          shift: [-21, -9]
+          rotate: -90
+
+      mouseleft:
+        what: kailhgm
+        where:
+          ref: thumb_inner_thumb
+          shift: [0, 13]
+          rotate: 0
+        params:
+          from: B6
+          to: ml_diode
+      mousemiddle:
+        what: kailhgm
+        where:
+          ref: thumb_inner_thumb
+          shift: [-13.5, 7]
+          rotate: 14
+        params:
+          from: B2
+          to: mm_diode
+      mouseright:
+        what: kailhgm
+        where:
+          ref: thumb_far_thumb
+          shift: [0, 13]
+        params:
+          from: mr_diode
+          to: B1
+      
+      mosuebtnhole1:
+        what: m2hole
+        where:
+          ref: thumb_inner_thumb
+          shift: [-9.5, 20]
+      mosuebtnhole2:
+        what: m2hole
+        where:
+          ref: thumb_far_thumb
+          shift: [9.5, 20]
+
+      mousediode1:
+        what: diode
+        where:
+          ref: matrix_pinky_home
+        adjust:
+          shift: [9.5, 6]
+          rotate: -90
+        params:
+          from: ml_diode
+          to: B7
+      mousediode2:
+        what: diode
+        where:
+          ref: matrix_pinky_home
+        adjust:
+          shift: [9.5, -6]
+          rotate: -90
+        params:
+          from: inner_thumb
+          to: B7
+      mousediode3:
+        what: diode
+        where:
+          ref: matrix_pinky_home
+        adjust:
+          shift: [-9.5, 12]
+          rotate: -90
+        params:
+          from: mr_diode
+          to: B7
+      thumbdiode4:
+        what: diode
+        where:
+          ref: matrix_pinky_home
+        adjust:
+          shift: [-9.5, 0]
+          rotate: -90
+        params:
+          from: mm_diode
+          to: B7
+      thumbdiode5:
+        what: diode
+        where:
+          ref: matrix_pinky_home
+        adjust:
+          shift: [-9.5, -12]
+          rotate: -90
+        params:
+          from: far_thumb
+          to: B7
+      
+      trackpoint100k:
+        what: diode
+        where:
+          ref: matrix_ring_home
+        adjust:
+          shift: [-9.5, -12]
+          rotate: -90
+        params:
+          from: trackpoint_reset
+          to: GND
+      trackpoint47k:
+        what: diode
+        where:
+          ref: matrix_ring_home
+        adjust:
+          shift: [-9.5, 0]
+          rotate: -90
+        params:
+          from: VCC
+          to: D2
+      trackpoint47k2:
+        what: diode
+        where:
+          ref: matrix_ring_home
+        adjust:
+          shift: [-9.5, 12]
+          rotate: -90
+        params:
+          from: VCC
+          to: D5
+
+      thumbswitch:
+        what: fiveway
+        where:
+          ref: thumb_inner_thumb
+          shift: [40, 20]
+        params:
+          p0: F0
+          p1: B6
+          p2: B2
+          p3: B5
+          p4: B1
+          p5: B3
+
+      thumbhole1:
+        what: m2hole
+        where:
+          ref: thumb_inner_thumb
+          shift: [29, 5.7]
+      thumbhole2:
+        what: m2hole
+        where:
+          ref: thumb_inner_thumb
+          shift: [29, -5.7]
+      thumbhole3:
+        what: m2hole
+        where:
+          ref: thumb_inner_thumb
+          shift: [42, 5.7]
+      thumbhole4:
+        what: m2hole
+        where:
+          ref: thumb_inner_thumb
+          shift: [42, -5.7]
+      
+      trackpointhole:
+        what: trackpointhole
+        where:
+          ref: matrix_inner_top
+          shift: [9.5, -7]
+
+      pcbmounthole1:
+        what: m2hole
+        where:
+          ref: matrix_outer_nums
+          shift: [-9.5, 0]
+      pcbmounthole2:
+        what: m2hole
+        where:
+          ref: matrix_outer_bottom
+          shift: [-9.5, 0]
+      pcbmounthole3:
+        what: m2hole
+        where:
+          ref: matrix_middle_nums
+          shift: [9.5, 0]
+      pcbmounthole5:
+        what: m2hole
+        where:
+          ref: thumb_far_thumb
+          shift: [0, -9]
+      pcbmounthole11:
+        what: m2hole
+        where:
+          ref: matrix_index_nums
+          shift: [-9.5, 0]
+
+      pcbmounthole6:
+        what: m2hole
+        where:
+          ref: matrix_index_top
+          shift: [9.5, 0]
+      pcbmounthole7:
+        what: m2hole
+        where:
+          ref: matrix_index_home
+          shift: [9.5, 0]
+      pcbmounthole8:
+        what: m2hole
+        where:
+          ref: matrix_inner_bottom
+          shift: [-9.5, 0]
+      pcbmounthole9:
+        what: m2hole
+        where:
+          ref: matrix_index_top
+          shift: [-28.5, 0]
+
+      pcbmounthole10:
+        what: m2hole
+        where:
+          ref: matrix_index_bottom
+          shift: [0, -9]
+
+      i2cresistor:
+        what: diode
+        where:
+          ref: matrix_inner_home
+        adjust:
+          shift: [-9.5, 6]
+          rotate: -90
+        params:
+          from: VCC
+          to: D1
+      trackpoint_capacitor_pos:
+        what: via
+        where:
+          ref: matrix_inner_home
+        adjust:
+          shift: [-12, 9.5]
+        params:
+          net: VCC
+      trackpoint_capacitor_neg:
+        what: via
+        where:
+          ref: matrix_inner_home
+        adjust:
+          shift: [-14.5, 9.5]
+        params:
+          net: trackpoint_reset

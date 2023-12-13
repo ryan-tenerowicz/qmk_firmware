@@ -33,8 +33,11 @@
 #define PS2_USART_ERROR         (UCSR1A & ((1<<FE1) | (1<<DOR1) | (1<<UPE1)))
 #define PS2_USART_RX_VECT       USART1_RX_vect
 
-#define SPLIT_HAND_PIN B6
+#define SPLIT_HAND_PIN B0
 #define USE_I2C
 
 #define SPLIT_POINTING_ENABLE
 #define POINTING_DEVICE_COMBINED
+
+#define MATRIX_COL_PINS_RIGHT { B1, B3, B2, B6, F0, F1 }
+#define MATRIX_ROW_PINS_RIGHT { F7, F6, F6, F4, B5, B7 }
