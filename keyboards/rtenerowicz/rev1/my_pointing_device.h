@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdbool.h>
 #include "debug.h"
+#include "quantum.h"
 #include "report.h"
 
 #define PS2_MOUSE_SEND(command, message)                                                \
@@ -154,6 +155,7 @@ typedef enum ps2_mouse_sample_rate_e {
 
 void pointing_device_driver_init(void);
 report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report);
+report_mouse_t scroll_toggle(report_mouse_t mouse_report);
 
 void ps2_mouse_disable_data_reporting(void);
 

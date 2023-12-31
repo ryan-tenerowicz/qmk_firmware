@@ -2,8 +2,6 @@
 #define PS2_CLOCK_PIN   D5
 #define PS2_DATA_PIN    D2
 
-/* synchronous, odd parity, 1-bit stop, 8-bit data, sample at falling edge */
-/* set DDR of CLOCK as input to be slave */
 #define PS2_USART_INIT() do {   \
     PS2_CLOCK_DDR &= ~(1<<PS2_CLOCK_BIT);   \
     PS2_DATA_DDR &= ~(1<<PS2_DATA_BIT);     \
@@ -35,9 +33,11 @@
 
 #define SPLIT_HAND_PIN B0
 #define USE_I2C
+#define SPLIT_MAX_CONNECTION_ERRORS 10
+#define SPLIT_CONNECTION_CHECK_TIMEOUT 50000000
 
 #define SPLIT_POINTING_ENABLE
 #define POINTING_DEVICE_COMBINED
 
 #define MATRIX_COL_PINS_RIGHT { B1, B3, B2, B6, F0, F1 }
-#define MATRIX_ROW_PINS_RIGHT { F7, F6, F6, F4, B5, B7 }
+#define MATRIX_ROW_PINS_RIGHT { F7, F6, F5, F4, B7, B5 }
