@@ -155,7 +155,6 @@ typedef enum ps2_mouse_sample_rate_e {
 
 void pointing_device_driver_init(void);
 report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report);
-report_mouse_t scroll_toggle(report_mouse_t mouse_report);
 
 void ps2_mouse_disable_data_reporting(void);
 

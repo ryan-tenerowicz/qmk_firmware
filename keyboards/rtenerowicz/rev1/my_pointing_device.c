@@ -102,7 +102,6 @@ report_mouse_t pointing_device_driver_get_report(report_mouse_t _) {
 #endif
         buttons_prev = mouse_report.buttons;
         ps2_mouse_convert_report_to_hid(&mouse_report);
-        mouse_report = scroll_toggle(mouse_report);
 #if PS2_MOUSE_SCROLL_BTN_MASK
         ps2_mouse_scroll_button_task(&mouse_report);
 #endif
@@ -117,8 +116,6 @@ report_mouse_t pointing_device_driver_get_report(report_mouse_t _) {
     ps2_mouse_clear_report(&mouse_report);
     return mouse_report;
 }
-
-__attribute__((weak)) report_mouse_t scroll_toggle(report_mouse_t mouse_report) { return mouse_report; }
 
 void ps2_mouse_disable_data_reporting(void) {
     PS2_MOUSE_SEND(PS2_MOUSE_DISABLE_DATA_REPORTING, "ps2 mouse disable data reporting");

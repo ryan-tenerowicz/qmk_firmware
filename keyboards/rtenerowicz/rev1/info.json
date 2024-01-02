@@ -17,7 +17,6 @@
     "command": false,
     "console": false,
     "extrakey": false,
-    "mousekey": false,
     "nkro": false
   },
   "diode_direction": "COL2ROW",
