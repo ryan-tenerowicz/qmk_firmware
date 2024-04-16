@@ -1,0 +1,62 @@
+{
+  "keyboard_name": "keyboard",
+  "manufacturer": "rtenerowicz",
+  "url": "",
+  "maintainer": "rtenerowicz",
+  "usb": {
+    "vid": "0xFEED",
+    "pid": "0x6060",
+    "device_version": "0.0.1"
+  },
+  "matrix_pins": {
+    "cols": ["E6", "B4", "B5", "B7", "C7", "F1", "B1", "F7", "F6"],
+    "rows": ["D3", "D4", "C6", "D7", "F0", "B6", "B2", "B3"]
+  },
+  "features": {
+    "bootmagic": false,
+    "command": false,
+    "console": false,
+    "extrakey": false,
+    "nkro": false
+  },
+  "diode_direction": "ROW2COL",
+  "processor": "atmega32u4",
+  "bootloader": "atmel-dfu",
+  "layouts": {
+    "LAYOUT": {
+      "layout": [
+        {"matrix": [4, 6], "x": 0, "y": 0},
+        {"matrix": [4, 7], "x": 0, "y": 0},
+        {"matrix": [4, 8], "x": 0, "y": 0},
+
+        {"matrix": [5, 6], "x": 0, "y": 0},
+        {"matrix": [5, 7], "x": 0, "y": 0},
+        {"matrix": [5, 8], "x": 0, "y": 0},
+
+        {"matrix": [6, 6], "x": 0, "y": 0},
+        {"matrix": [6, 7], "x": 0, "y": 0},
+        {"matrix": [6, 8], "x": 0, "y": 0},
+
+        {"matrix": [7, 6], "x": 0, "y": 0},
+        {"matrix": [7, 7], "x": 0, "y": 0},
+        {"matrix": [7, 8], "x": 0, "y": 0},
+
+        {"matrix": [12, 6], "x": 0, "y": 0},
+        {"matrix": [12, 7], "x": 0, "y": 0},
+        {"matrix": [12, 8], "x": 0, "y": 0},
+
+        {"matrix": [13, 6], "x": 0, "y": 0},
+        {"matrix": [13, 7], "x": 0, "y": 0},
+        {"matrix": [13, 8], "x": 0, "y": 0},
+
+        {"matrix": [14, 6], "x": 0, "y": 0},
+        {"matrix": [14, 7], "x": 0, "y": 0},
+        {"matrix": [14, 8], "x": 0, "y": 0},
+
+        {"matrix": [15, 6], "x": 0, "y": 0},
+        {"matrix": [15, 7], "x": 0, "y": 0},
+        {"matrix": [15, 8], "x": 0, "y": 0}
+      ]
+    }
+  }
+}
