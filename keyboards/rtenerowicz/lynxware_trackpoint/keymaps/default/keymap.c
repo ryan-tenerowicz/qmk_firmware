@@ -39,25 +39,27 @@ enum {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAK] = LAYOUT(
-    KC_0, KC_1, KC_2, KC_3, KC_4, KC_5,
-    KC_0, KC_1, KC_2, KC_3, KC_4, KC_5,
-    KC_0, KC_1, KC_2, KC_3, KC_4, KC_5,
-    KC_0, KC_1, KC_2, KC_3, KC_4, KC_5,
+    KC_H, KC_E, KC_1, KC_2, KC_A,
+    KC_K, KC_F, KC_1, KC_2, KC_3, KC_B,
+    KC_G, KC_1, KC_2, KC_3, KC_4, KC_C,
+    KC_2, KC_3, KC_4,
 
-    KC_1, KC_2, KC_3, 
-    KC_5, KC_6, KC_7, 
-    KC_9, KC_0, KC_A,
-    KC_9, KC_0, KC_A,
+    KC_1, KC_2, 
+    KC_5, KC_6, 
+    KC_9, KC_0,
+    KC_B, KC_C,
+    KC_D, KC_E,
 
-    KC_0, KC_1, KC_2, KC_3, KC_4, KC_5,
-    KC_0, KC_1, KC_2, KC_3, KC_4, KC_5,
-    KC_0, KC_1, KC_2, KC_3, KC_4, KC_5,
-    KC_0, KC_1, KC_2, KC_3, KC_4, KC_5,
+    KC_0, KC_1, KC_2, KC_3, KC_A,
+    KC_0, KC_1, KC_2, KC_3, KC_B, KC_C,
+    KC_0, KC_1, KC_2, KC_3, KC_D, KC_E,
+    KC_0, KC_1, KC_2,
 
-    KC_1, KC_1, KC_1,
-    KC_1, KC_1, KC_1, 
-    KC_1, KC_1, KC_1,
-    KC_1, KC_1, KC_1
+    KC_1, KC_2,
+    KC_4, KC_5,
+    KC_7, KC_8,
+    KC_A, KC_B,
+    KC_C, KC_D
   ),
 };
 
@@ -68,7 +70,7 @@ int8_t drag_scroll_y_semaphore_left = 0;
 int8_t drag_scroll_x_semaphore_right = 0;
 int8_t drag_scroll_y_semaphore_right = 0;
 
-static bool is_drag_scroll_left = true;
+static bool is_drag_scroll_left = false;
 static bool is_drag_scroll_right = false;
 
 report_mouse_t scroll_toggle_left(report_mouse_t mouse_report) {
@@ -109,7 +111,7 @@ report_mouse_t scroll_toggle_left(report_mouse_t mouse_report) {
 }
 
 report_mouse_t scroll_toggle_right(report_mouse_t mouse_report) {
-    if (is_drag_scroll_right) {
+    if (is_drag_scroll_right){
         int16_t mouse_report_x_temp = mouse_report.x;
         int16_t mouse_report_y_temp = mouse_report.y;
         int16_t mouse_report_x_calc = 0;
