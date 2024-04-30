@@ -1,36 +1,19 @@
-# Quantum Mechanical Keyboard Firmware
+# Lynxware Cat with trackpoint
 
-[![Current Version](https://img.shields.io/github/tag/qmk/qmk_firmware.svg)](https://github.com/qmk/qmk_firmware/tags)
-[![Discord](https://img.shields.io/discord/440868230475677696.svg)](https://discord.gg/Uq7gcHh)
-[![Docs Status](https://img.shields.io/badge/docs-ready-orange.svg)](https://docs.qmk.fm)
-[![GitHub contributors](https://img.shields.io/github/contributors/qmk/qmk_firmware.svg)](https://github.com/qmk/qmk_firmware/pulse/monthly)
-[![GitHub forks](https://img.shields.io/github/forks/qmk/qmk_firmware.svg?style=social&label=Fork)](https://github.com/qmk/qmk_firmware/)
+https://www.lynxware.org/
 
-This is a keyboard firmware based on the [tmk\_keyboard firmware](https://github.com/tmk/tmk_keyboard) with some useful features for Atmel AVR and ARM controllers, and more specifically, the [OLKB product line](https://olkb.com), the [ErgoDox EZ](https://ergodox-ez.com) keyboard, and the [Clueboard product line](https://clueboard.co).
+![](images/main_image.jpg)
 
-## Documentation
+I made some modifications to the case to work with the hardware I have. I already had some dual trackpoint code working in QMK so I made the connection wired and setup the matrix for qmk. I really like the magnetic usb cables so I carved out enough room for them. 
 
-* [See the official documentation on docs.qmk.fm](https://docs.qmk.fm)
+![](images/internal_wiring.jpg)
 
-The docs are powered by [Docsify](https://docsify.js.org/) and hosted on [GitHub](/docs/). They are also viewable offline; see [Previewing the Documentation](https://docs.qmk.fm/#/contributing?id=previewing-the-documentation) for more details.
+There's plenty of room on the inside so I was able to fit the reset circut easily.
 
-You can request changes by making a fork and opening a [pull request](https://github.com/qmk/qmk_firmware/pulls), or by clicking the "Edit this page" link at the bottom of any page.
+![](images/trackpoint_mounting.jpg)
 
-## Supported Keyboards
+I was able to get a much better surface finish on the keys by printing them at an angle. And I added wings to them to keep them from falling outwards because I was using smaller silent mouse switches.
 
-* [Planck](/keyboards/planck/)
-* [Preonic](/keyboards/preonic/)
-* [ErgoDox EZ](/keyboards/ergodox_ez/)
-* [Clueboard](/keyboards/clueboard/)
-* [Cluepad](/keyboards/clueboard/17/)
-* [Atreus](/keyboards/atreus/)
+![](images/keys.jpg)
 
-The project also includes community support for [lots of other keyboards](/keyboards/).
-
-## Maintainers
-
-QMK is developed and maintained by Jack Humbert of OLKB with contributions from the community, and of course, [Hasu](https://github.com/tmk). The OLKB product firmwares are maintained by [Jack Humbert](https://github.com/jackhumbert), the Ergodox EZ by [ZSA Technology Labs](https://github.com/zsa), the Clueboard by [Zach White](https://github.com/skullydazed), and the Atreus by [Phil Hagelberg](https://github.com/technomancy).
-
-## Official Website
-
-[qmk.fm](https://qmk.fm) is the official website of QMK, where you can find links to this page, the documentation, and the keyboards supported by QMK.
+https://www.lynxware.org/

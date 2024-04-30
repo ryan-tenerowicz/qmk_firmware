@@ -42,4 +42,4 @@
 #define MATRIX_COL_PINS_RIGHT { E6, B4, B5, B7, C7, F1, B1, F7, F6 }
 #define MATRIX_ROW_PINS_RIGHT { D3, D4, C6, D7, F0, B6, B2, B3 }
 
-#define TAPPING_TERM 175
+#define TAPPING_TERM 250

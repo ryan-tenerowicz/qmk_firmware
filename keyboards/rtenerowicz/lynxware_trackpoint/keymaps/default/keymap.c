@@ -17,49 +17,121 @@
 #include "my_pointing_device.h"
 
 enum layers {
-    _COLEMAK,
-    _SYMBOL,
-    _NAVIGATION
+    _ENGRAM,
+    _NUMBERS,
+    _NAVIGATION,
+    _MOUSE,
 };
 
 enum custom_keys {
-    COLEMAK = SAFE_RANGE,
+    ENGRAM = SAFE_RANGE,
     SCROLL_TOGGLE_LEFT,
-    SCROLL_TOGGLE_RIGHT
+    SCROLL_TOGGLE_RIGHT,
+    SCROLL_TOGGLE_LEFT_TEMP,
+    SCROLL_TOGGLE_RIGHT_TEMP,
 };
 
 enum {
-  KC_A_SCROLL,
-  KC_O_SCROLL,
-  KC_T_BACK,
-  KC_V_FWD,
-  KC_M_BACK,
-  KC_N_FWD
+  KC_COMM_SCROLL,
+  KC_DOT_SCROLL,
+  KC_O_BACK,
+  KC_U_FWD,
+  KC_L_BACK,
+  KC_D_FWD,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [_COLEMAK] = LAYOUT(
-    KC_H, KC_E, KC_1, KC_2, KC_A,
-    KC_K, KC_F, KC_1, KC_2, KC_3, KC_B,
-    KC_G, KC_1, KC_2, KC_3, KC_4, KC_C,
-    KC_2, KC_3, KC_4,
+  [_ENGRAM] = LAYOUT(
+            KC_B, KC_Y, TD(KC_O_BACK), TD(KC_U_FWD), KC_QUOT,
+    KC_Z,   KC_C, KC_I, KC_E, KC_A, TD(KC_COMM_SCROLL),
+    KC_GRV, KC_G, KC_J, KC_X, KC_K, KC_MINS,
+               KC_DEL, KC_BSPC, KC_SPC,
 
-    KC_1, KC_2, 
-    KC_5, KC_6, 
-    KC_9, KC_0,
-    KC_B, KC_C,
-    KC_D, KC_E,
+    KC_LCTL, KC_LSFT,
+    _______, MO(_NUMBERS), 
+    _______, KC_ESC ,
+    KC_BTN2, KC_BTN1,
+    TG(_MOUSE), KC_BTN3,
 
-    KC_0, KC_1, KC_2, KC_3, KC_A,
-    KC_0, KC_1, KC_2, KC_3, KC_B, KC_C,
-    KC_0, KC_1, KC_2, KC_3, KC_D, KC_E,
-    KC_0, KC_1, KC_2,
+    KC_SCLN, TD(KC_L_BACK), TD(KC_D_FWD), KC_W, KC_V,
+    TD(KC_DOT_SCROLL), KC_H, KC_T, KC_S, KC_N, KC_Q,
+    KC_SLASH, KC_R, KC_M, KC_F, KC_P, KC_EQL,
+          KC_SPC, KC_ENT, KC_TAB,
 
-    KC_1, KC_2,
-    KC_4, KC_5,
-    KC_7, KC_8,
-    KC_A, KC_B,
-    KC_C, KC_D
+    KC_RSFT, KC_RCTL,
+    MO(_NUMBERS), _______, 
+    KC_ESC , _______,
+    KC_BTN1, KC_BTN2,
+    KC_BTN3, TG(_MOUSE)
+  ),
+  [_NUMBERS] = LAYOUT(
+             KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  ,
+    _______, KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,
+    _______, _______, _______, _______, _______, KC_LBRC,
+                      _______, _______, _______,
+
+    _______, _______, 
+    _______, _______,
+    _______, _______,
+    _______, _______,
+    _______, _______,
+
+    KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 ,
+    KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , KC_F11,
+    KC_RBRC, _______, _______, _______, _______, KC_F12,
+             _______, _______, _______,
+
+    _______, _______, 
+    _______, _______,
+    _______, _______,
+    _______, _______,
+    _______, _______
+  ),
+  [_NAVIGATION] = LAYOUT(
+             _______, _______, KC_UP  , _______, _______,
+    _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______,
+    _______, _______, _______, _______, _______, _______,
+                      _______, _______, _______,
+
+    _______, _______, 
+    _______, _______,
+    _______, _______,
+    _______, _______,
+    _______, _______,
+
+    _______, _______, KC_UP  , _______, _______,
+    _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
+    _______, _______, _______, _______, _______, _______,
+             _______, _______, _______,
+
+    _______, _______, 
+    _______, _______,
+    _______, _______,
+    _______, _______,
+    _______, _______
+  ),
+  [_MOUSE] = LAYOUT(
+             _______, _______, SCROLL_TOGGLE_LEFT_TEMP, _______, _______,
+    _______, _______, KC_BTN2, KC_BTN3, KC_BTN1, SCROLL_TOGGLE_LEFT,
+    _______, _______, _______, _______, _______, _______,
+                      _______, _______, _______,
+
+    _______, _______, 
+    _______, _______,
+    _______, _______,
+    _______, _______,
+    _______, _______,
+
+    _______, _______, SCROLL_TOGGLE_RIGHT_TEMP, _______, _______,
+    SCROLL_TOGGLE_RIGHT, KC_BTN1, KC_BTN3, KC_BTN2, _______, _______,
+    _______, _______, _______, _______, _______, _______,
+             _______, _______, _______,
+
+    _______, _______, 
+    _______, _______,
+    _______, _______,
+    _______, _______,
+    _______, _______
   ),
 };
 
@@ -102,7 +174,10 @@ report_mouse_t scroll_toggle_left(report_mouse_t mouse_report) {
             }
         }
 
-        mouse_report.h = mouse_report_x_calc;
+        mouse_report.h = 0;
+        if (mouse_report_x_calc > 5) {
+            mouse_report.h = mouse_report_x_calc;
+        }
         mouse_report.v = -mouse_report_y_calc;
         mouse_report.x = 0;
         mouse_report.y = 0;
@@ -139,6 +214,7 @@ report_mouse_t scroll_toggle_right(report_mouse_t mouse_report) {
             }
         }
 
+        // TODO figure out deadzone for horizontal scroll
         mouse_report.h = mouse_report_x_calc;
         mouse_report.v = -mouse_report_y_calc;
         mouse_report.x = 0;
@@ -147,8 +223,28 @@ report_mouse_t scroll_toggle_right(report_mouse_t mouse_report) {
     return mouse_report;
 }
 
+uint16_t mouse_rotation_angle = 10;
+
+void rotate_mouse_coordinates(int angle, report_mouse_t *mouse_report) {
+    // because pi/180 = 0.017453
+    static const float degree = 0.017453f;
+
+    float radians = angle * degree;
+
+    // Need to save these values because we rewrite mouse_report->x immediately but reuse the value to find the rotated y value
+    int current_x = mouse_report->x;
+    int current_y = mouse_report->y;
+
+    // Calculate rotated x & y, convert back to an int
+    mouse_report->x = round(cos(radians) * current_x - sin(radians) * current_y);
+    mouse_report->y = round(sin(radians) * current_x + cos(radians) * current_y);
+}
+
+
 report_mouse_t pointing_device_task_combined_user(report_mouse_t left_report, report_mouse_t right_report) {
+    rotate_mouse_coordinates(-mouse_rotation_angle, &left_report);
     left_report = scroll_toggle_left(left_report);
+    rotate_mouse_coordinates(mouse_rotation_angle, &right_report);
     right_report = scroll_toggle_right(right_report);
     return pointing_device_combine_reports(left_report, right_report);
 }
@@ -168,7 +264,7 @@ void tap_dance_tap_hold_finished_right(tap_dance_state_t *state, void *user_data
             is_drag_scroll_right ^= 1;
             tap_hold->is_scroll = true;
         } else {
-            register_code16(KC_O);
+            register_code16(KC_DOT);
             tap_hold->is_key = true;
         }
     }
@@ -178,7 +274,7 @@ void tap_dance_tap_hold_reset_right(tap_dance_state_t *state, void *user_data) {
     tap_dance_scroll_t *tap_hold = (tap_dance_scroll_t *)user_data;
 
     if (tap_hold->is_key) {
-        unregister_code16(KC_O);
+        unregister_code16(KC_DOT);
         tap_hold->is_key = false;
     }
     if (tap_hold->is_scroll) {
@@ -195,7 +291,7 @@ void tap_dance_tap_hold_finished_left(tap_dance_state_t *state, void *user_data)
             is_drag_scroll_left ^= 1;
             tap_hold->is_scroll = true;
         } else {
-            register_code16(KC_A);
+            register_code16(KC_COMM);
             tap_hold->is_key = true;
         }
     }
@@ -205,7 +301,7 @@ void tap_dance_tap_hold_reset_left(tap_dance_state_t *state, void *user_data) {
     tap_dance_scroll_t *tap_hold = (tap_dance_scroll_t *)user_data;
 
     if (tap_hold->is_key) {
-        unregister_code16(KC_A);
+        unregister_code16(KC_COMM);
         tap_hold->is_key = false;
     }
     if (tap_hold->is_scroll) {
@@ -251,12 +347,12 @@ void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
     { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
 
 tap_dance_action_t tap_dance_actions[] = {
-    [KC_O_SCROLL] = { .fn = {NULL, tap_dance_tap_hold_finished_right, tap_dance_tap_hold_reset_right}, .user_data = (void *)&((tap_dance_scroll_t){false,false}), },
-    [KC_A_SCROLL] = { .fn = {NULL, tap_dance_tap_hold_finished_left, tap_dance_tap_hold_reset_left}, .user_data = (void *)&((tap_dance_scroll_t){false,false}), },
-    [KC_T_BACK] = ACTION_TAP_DANCE_TAP_HOLD(KC_T, KC_BTN4),
-    [KC_V_FWD] = ACTION_TAP_DANCE_TAP_HOLD(KC_V, KC_BTN5),
-    [KC_M_BACK] = ACTION_TAP_DANCE_TAP_HOLD(KC_M, KC_BTN4),
-    [KC_N_FWD] = ACTION_TAP_DANCE_TAP_HOLD(KC_N, KC_BTN5)
+    [KC_DOT_SCROLL] = { .fn = {NULL, tap_dance_tap_hold_finished_right, tap_dance_tap_hold_reset_right}, .user_data = (void *)&((tap_dance_scroll_t){false,false}), },
+    [KC_COMM_SCROLL] = { .fn = {NULL, tap_dance_tap_hold_finished_left, tap_dance_tap_hold_reset_left}, .user_data = (void *)&((tap_dance_scroll_t){false,false}), },
+    [KC_O_BACK] = ACTION_TAP_DANCE_TAP_HOLD(KC_O, KC_BTN4),
+    [KC_U_FWD] = ACTION_TAP_DANCE_TAP_HOLD(KC_U, KC_BTN5),
+    [KC_L_BACK] = ACTION_TAP_DANCE_TAP_HOLD(KC_L, KC_BTN4),
+    [KC_D_FWD] = ACTION_TAP_DANCE_TAP_HOLD(KC_D, KC_BTN5),
 };
 
 
@@ -274,22 +370,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             is_drag_scroll_right ^= 1;
           }
           return false;
-        case TD(KC_O_SCROLL):
+        case SCROLL_TOGGLE_LEFT_TEMP:
+          if (record->event.pressed) {
+            is_drag_scroll_left ^= 1;
+          } else {
+            is_drag_scroll_left ^= 1;
+          }
+          return false;
+        case SCROLL_TOGGLE_RIGHT_TEMP:
+          if (record->event.pressed) {
+            is_drag_scroll_right ^= 1;
+          } else {
+            is_drag_scroll_right ^= 1;
+          }
+          return false;
+        case TD(KC_DOT_SCROLL):
           action = &tap_dance_actions[TD_INDEX(keycode)];
           if (!record->event.pressed && action->state.count && !action->state.finished) {
-              tap_code16(KC_O);
+              tap_code16(KC_DOT);
           }
           return true;
-        case TD(KC_A_SCROLL):
+        case TD(KC_COMM_SCROLL):
           action = &tap_dance_actions[TD_INDEX(keycode)];
           if (!record->event.pressed && action->state.count && !action->state.finished) {
-              tap_code16(KC_A);
+              tap_code16(KC_COMM);
           }
           return true;
-        case TD(KC_T_BACK):
-        case TD(KC_V_FWD):
-        case TD(KC_M_BACK):
-        case TD(KC_N_FWD):
+        case TD(KC_O_BACK):
+        case TD(KC_U_FWD):
+        case TD(KC_L_BACK):
+        case TD(KC_D_FWD):
             action = &tap_dance_actions[TD_INDEX(keycode)];
             if (!record->event.pressed && action->state.count && !action->state.finished) {
                 tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
