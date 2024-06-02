@@ -1,0 +1,49 @@
+#define PS2_MOUSE_USE_REMOTE_MODE
+#define PS2_CLOCK_PIN   D5
+#define PS2_DATA_PIN    D2
+
+#define PS2_USART_INIT() do {   \
+    PS2_CLOCK_DDR &= ~(1<<PS2_CLOCK_BIT);   \
+    PS2_DATA_DDR &= ~(1<<PS2_DATA_BIT);     \
+    UCSR1C = ((1 << UMSEL10) |  \
+              (3 << UPM10)   |  \
+              (0 << USBS1)   |  \
+              (3 << UCSZ10)  |  \
+              (0 << UCPOL1));   \
+    UCSR1A = 0;                 \
+    UBRR1H = 0;                 \
+    UBRR1L = 0;                 \
+} while (0)
+#define PS2_USART_RX_INT_ON() do {  \
+    UCSR1B = ((1 << RXCIE1) |       \
+              (1 << RXEN1));        \
+} while (0)
+#define PS2_USART_RX_POLL_ON() do { \
+    UCSR1B = (1 << RXEN1);          \
+} while (0)
+#define PS2_USART_OFF() do {    \
+    UCSR1C = 0;                 \
+    UCSR1B &= ~((1 << RXEN1) |  \
+                (1 << TXEN1));  \
+} while (0)
+#define PS2_USART_RX_READY      (UCSR1A & (1<<RXC1))
+#define PS2_USART_RX_DATA       UDR1
+#define PS2_USART_ERROR         (UCSR1A & ((1<<FE1) | (1<<DOR1) | (1<<UPE1)))
+#define PS2_USART_RX_VECT       USART1_RX_vect
+
+#define SPLIT_HAND_PIN B0
+#define USE_I2C
+#define SPLIT_MAX_CONNECTION_ERRORS 10
+#define SPLIT_CONNECTION_CHECK_TIMEOUT 5000
+
+#define SPLIT_POINTING_ENABLE
+#define POINTING_DEVICE_COMBINED
+
+#define MATRIX_COL_PINS_RIGHT { B1, B3, B2, B6, F0, F1 }
+#define MATRIX_ROW_PINS_RIGHT { F7, F6, F5, F4, C7 }
+
+#define TAPPING_TERM 500
+#define TAPPING_TERM_PER_KEY
+#define PERMISSIVE_HOLD
+#define PERMISSIVE_HOLD_PER_KEY
+#define RETRO_TAPPING
