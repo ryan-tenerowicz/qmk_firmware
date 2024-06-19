@@ -37,25 +37,27 @@ enum {
   KC_N_FWD
 };
 
-const uint16_t PROGMEM test_combo1[] = {KC_L, KC_D, COMBO_END};
-const uint16_t PROGMEM test_combo2[] = {KC_D, KC_W, COMBO_END};
-const uint16_t PROGMEM test_combo3[] = {KC_O, KC_U, COMBO_END};
-const uint16_t PROGMEM test_combo4[] = {KC_Y, KC_O, COMBO_END};
+const uint16_t PROGMEM test_combo1[] = {KC_6, KC_7, COMBO_END};
+const uint16_t PROGMEM test_combo2[] = {KC_SCLN, KC_L, COMBO_END};
+const uint16_t PROGMEM test_combo3[] = {KC_4, KC_5, COMBO_END};
+const uint16_t PROGMEM test_combo4[] = {KC_U, KC_QUOT, COMBO_END};
 combo_t key_combos[] = {
-    COMBO(test_combo1, KC_BTN4),
-    COMBO(test_combo2, KC_BTN5),
-    COMBO(test_combo3, KC_BTN4),
-    COMBO(test_combo4, KC_BTN5),
+    COMBO(test_combo1, KC_BTN5),
+    COMBO(test_combo2, KC_BTN4),
+    COMBO(test_combo3, KC_BTN5),
+    COMBO(test_combo4, KC_BTN4),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAK] = LAYOUT(
-    KC_GRV , KC_1, KC_2, KC_3, KC_4, KC_5,   KC_6,    KC_7, KC_8, KC_9, KC_0, KC_BSLS,
+    KC_GRV , KC_1, KC_2, KC_3, KC_4, KC_5,   KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSLS,
     KC_DEL , KC_B, KC_Y, KC_O, KC_U, KC_QUOT,   KC_SCLN, KC_L, KC_D, KC_W, KC_V, KC_TAB,
     KC_BSPC, KC_C, KC_I, LT(_NAVIGATION, KC_E), LT(_SYMBOL, KC_A), KC_COMM,   KC_DOT , LT(_SYMBOL, KC_H), LT(_NAVIGATION, KC_T), KC_S, KC_N, KC_ENT,
-    KC_Z, SFT_T(KC_G), LWIN_T(KC_X), ALT_T(KC_J), LCTL_T(KC_K), KC_MINS,   KC_SLSH, LCTL_T(KC_R), ALT_T(KC_M), LWIN_T(KC_F), SFT_T(KC_P), KC_Q,
+    KC_Z, SFT_T(KC_G), LWIN_T(KC_X), ALT_T(KC_J), CTL_T(KC_K), KC_MINS,   KC_SLSH, CTL_T(KC_R), ALT_T(KC_M), LWIN_T(KC_F), SFT_T(KC_P), KC_Q,
 
-    LCTL_T(KC_ESC), SFT_T(KC_SPC), TD(KC_MIDDLE_LEFT), KC_BTN1, KC_BTN2,   KC_BTN2, KC_BTN1, TD(KC_MIDDLE_RIGHT), SFT_T(KC_SPC), LCTL_T(KC_ESC)
+    SFT_T(KC_SPC), LT(_NAVIGATION, KC_ESC), KC_BTN2, KC_BTN1, TD(KC_MIDDLE_LEFT),   TD(KC_MIDDLE_RIGHT), KC_BTN1, KC_BTN2, LT(_NAVIGATION, KC_ESC), SFT_T(KC_SPC)
+
+    //LT(_NAVIGATION, KC_ESC), SFT_T(KC_SPC), TD(KC_MIDDLE_LEFT), KC_BTN1, KC_BTN2,   KC_BTN2, KC_BTN1, TD(KC_MIDDLE_RIGHT), SFT_T(KC_SPC), LT(_NAVIGATION, KC_ESC)
   ),
   [_SYMBOL] = LAYOUT(
     _______ , _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______, _______,
@@ -68,10 +70,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_NAVIGATION] = LAYOUT(
     _______ , _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______, _______,
     _______ , _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______, _______,
-    _______ , KC_LEFT, KC_DOWN, KC_UP , KC_RIGHT, _______,   _______, KC_LEFT, KC_UP , KC_DOWN, KC_RIGHT, _______,
+    _______ , KC_LEFT, KC_DOWN, KC_UP , KC_RIGHT, _______,   _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______,
     _______ , _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______, _______,
 
-              _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______
+       _______, _______, SCROLL_TOGGLE_LEFT, _______, _______,   _______, _______, SCROLL_TOGGLE_RIGHT, _______, _______
   ),
 };
 
@@ -159,10 +161,56 @@ report_mouse_t scroll_toggle_right(report_mouse_t mouse_report) {
     return mouse_report;
 }
 
+inline float fast_approximate_square_root(float input_number) {
+    long bit_representation;
+    float half_input, approximate_result;
+    const float constant_for_approximation = 1.5F;
+
+    half_input = input_number * 0.5F;
+    approximate_result = input_number;
+    bit_representation = *(long*)&approximate_result;
+    bit_representation = 0x5f3759df - (bit_representation >> 1);
+    approximate_result = *(float*)&bit_representation;
+    approximate_result = approximate_result * (constant_for_approximation - (half_input * approximate_result * approximate_result));
+
+    return 1 / approximate_result;
+}
+
+inline float fast_approximate_power(float base_value, float exponent_value) {
+    union {
+        float float_value;
+        int int_value;
+    } union_representation = { base_value };
+
+    union_representation.int_value = (int)(exponent_value * (union_representation.int_value - 1064866805) + 1064866805);
+
+    return union_representation.float_value;
+}
+
+void scale_mouse_vector_optimized(report_mouse_t *mouse_report) {
+    // Convert integers to float for calculations
+    float x = (float)mouse_report->x;
+    float y = (float)mouse_report->y;
+
+    // Using fast square root and power approximations
+    float hypotenuse = fast_approximate_square_root(x * x + y * y);
+    float scaled_hypotenuse = fast_approximate_power(hypotenuse, 1.2f) / 0.9f;
+
+    // Eliminating redundant trigonometric calculations
+    float cos_angle = x / hypotenuse;
+    float sin_angle = y / hypotenuse;
+
+    // Convert float back to integer with rounding
+    mouse_report->x += (int)(scaled_hypotenuse * cos_angle + 0.5);
+    mouse_report->y += (int)(scaled_hypotenuse * sin_angle + 0.5);
+}
+
 report_mouse_t pointing_device_task_combined_user(report_mouse_t left_report, report_mouse_t right_report) {
     left_report = scroll_toggle_left(left_report);
     right_report = scroll_toggle_right(right_report);
-    return pointing_device_combine_reports(left_report, right_report);
+    report_mouse_t combined = pointing_device_combine_reports(left_report, right_report);
+    scale_mouse_vector_optimized(&combined);
+    return combined;
 }
 
 
@@ -313,23 +361,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case KC_MIDDLE_RIGHT:
-        case KC_BTN3:
-            return 10;
+        case TD(KC_MIDDLE_RIGHT):
+        case TD(KC_MIDDLE_LEFT):
+            return 200;
         default:
             return TAPPING_TERM;
     }
 }
-
-bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case KC_MIDDLE_RIGHT:
-        case KC_BTN3:
-            // Immediately select the hold action when another key is tapped.
-            return false;
-        default:
-            // Do not select the hold action when another key is tapped.
-            return true;
-    }
-}
-
